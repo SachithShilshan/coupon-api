@@ -8,12 +8,14 @@ app = Flask(__name__)
 lr_model = joblib.load('coupon_model_lr.pkl')
 dt_model = joblib.load('coupon_model_dt.pkl')
 features = joblib.load('model_features.pkl')
+features_pca = joblib.load('model_features_pca.pkl')
+xg_model = joblib.load('coupon_model_xgboost.pkl')
 
 @app.route('/')
 def home():
     return "Coupon Redemption Prediction API"
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict_lr', methods=['POST'])
 def predict_lr():
     try:
         input_data = pd.DataFrame([request.json])[features]
@@ -32,6 +34,17 @@ def predict_dt():
         return jsonify({'model': 'Decision Tree', 'prediction': int(pred), 'probability': float(proba)})
     except Exception as e:
         return jsonify({'error': str(e)})
+
+@app.route('/predict_xg', methods=['POST'])
+def predict_xg():
+    try:
+        input_data = pd.DataFrame([request.json])[features_pca]
+        pred = dt_model.predict(input_data)[0]
+        proba = dt_model.predict_proba(input_data)[0][1]
+        return jsonify({'model': 'Xgboost', 'prediction': int(pred), 'probability': float(proba)})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
