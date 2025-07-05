@@ -1,5 +1,6 @@
-flask
-scikit-learn
+Flask==2.3.3
 pandas
+scikit-learn
+xgboost
 joblib
 gunicorn
