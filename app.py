@@ -24,6 +24,9 @@ features_pca = joblib.load('model_features_pca.pkl')   # For XGBoost with PCA
 def home():
     return "🎯 Coupon Redemption Prediction API is running!"
 
+@app.route('/health')
+def health():
+    return jsonify({'status': 'ok'})
 
 @app.route('/predict', methods=['POST'])
 def predict_lr():
@@ -68,29 +71,7 @@ def predict_dt():
     except Exception as e:
         return jsonify({'error': str(e)})
 
-@app.route('/predict_xg', methods=['POST'])
-def predict_xg():
-    try:
-        input_data = pd.DataFrame([request.json])
 
-        for col in features_pca:
-            if col not in input_data.columns:
-                input_data[col] = 0
-        input_data = input_data[features_pca]
-
-        dmatrix = xgb.DMatrix(input_data)
-
-        proba = xg_model.predict(dmatrix)[0]
-        prediction = int(proba >= best_thresh)
-
-        return jsonify({
-            'model': 'XGBoost (PCA)',
-            'prediction': prediction,
-            'probability': float(proba),
-            'threshold_used': float(best_thresh)
-        })
-    except Exception as e:
-        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
     app.run(debug=True)
