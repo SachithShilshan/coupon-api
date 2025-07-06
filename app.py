@@ -11,14 +11,14 @@ dt_model = joblib.load('coupon_model_dt.pkl')
 
 # Load XGBoost model (trained using xgb.train())
 xg_model = xgb.Booster()
-xg_model.load_model('coupon_model_xgboost.json')
+#xg_model.load_model('coupon_model_xgboost.json')
 
 # Load best threshold for XGBoost
 best_thresh = joblib.load('xgboost_best_threshold.pkl')
 
 # Load feature lists
 features = joblib.load('model_features.pkl')           # For Logistic & DT
-features_pca = joblib.load('model_features_pca.pkl')   # For XGBoost with PCA
+#features_pca = joblib.load('model_features_pca.pkl')   # For XGBoost with PCA
 
 @app.route('/')
 def home():
