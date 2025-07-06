@@ -14,7 +14,7 @@ xg_model = xgb.Booster()
 #xg_model.load_model('coupon_model_xgboost.json')
 
 # Load best threshold for XGBoost
-best_thresh = joblib.load('xgboost_best_threshold.pkl')
+#best_thresh = joblib.load('xgboost_best_threshold.pkl')
 
 # Load feature lists
 features = joblib.load('model_features.pkl')           # For Logistic & DT
